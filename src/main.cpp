@@ -75,8 +75,19 @@ int main()
     {
         std::cout << "PartBuddy > ";
         if (!std::getline(std::cin, command)) {
+            if (std::cin.eof()) {                           // Handle EOF command (CTRL+Z)
+                break;
+            }
 
+            if (std::cin.bad()) {
+                std::cerr << "\nAn input error occurred.\n";
+                return -1;
+            }
+
+            std::cin.clear();
+            continue;
         }
+
         if (command == "exit" || command == "quit") {
             break;                                          // Handle exit/quit command
         }
