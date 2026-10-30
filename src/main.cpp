@@ -14,8 +14,10 @@ void printWelcome()
                                                                                .88 
                                                                            d8888P
                                                                            
-    Your electronics inventory manager. Type 'help' to see available commands.
+                An electronics inventory manager built for the bench.
 )";
+
+    std::cout << "\n\n" << R"(Type 'help' for a list of available commands.)" << "\n\n";
 }
 
 void printHelp()
