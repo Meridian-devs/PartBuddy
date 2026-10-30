@@ -70,6 +70,6 @@ PartBuddy is free and open-source software licensed under the GNU General Public
 You are free to use, study, modify, and distribute PartBuddy in accordance with the terms of the license. If you distribute modified versions of the software, 
 you must comply with the GPL-3.0 requirements, including providing the corresponding source code under the same license.
 
-See the [LICENSE](LICENSE.md) file for the full license text.
+See the [LICENSE](LICENSE) file for the full license text.
 
 **PartBuddy is a project by Meridian.**
