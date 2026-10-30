@@ -7,7 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/Meridian-devs/PartBuddy?style=social)](https://github.com/Meridian-devs/PartBuddy/stargazers)
 
 
-[🚀 Quick Start](#quick-start) | [📖 Documentation]() | [⭐ Support Us]() | [🤝 Contributing](.github/CONTRIBUTING.md)
+[📖 Documentation]() | [⭐ Support Us]() | [🤝 Contributing](.github/CONTRIBUTING.md)
 
 </div>
 
@@ -72,4 +72,4 @@ you must comply with the GPL-3.0 requirements, including providing the correspon
 
 See the [LICENSE](LICENSE) file for the full license text.
 
-**PartBuddy is a project by Meridian.**
+**- PartBuddy is a project by Meridian.**
