@@ -100,7 +100,7 @@ We provide several issue templates to help you report bugs, request features, or
 - [📖 Documentation](.github/ISSUE_TEMPLATE/documentation.md)
 
 ## License
-PartBuddy is free and open-source software licensed under the GNU General Public License v3.0 (GPL-3.0) - see the [LICENSE](LICENSE.md) for full the full license text.
+PartBuddy is free and open-source software licensed under the GNU General Public License v3.0 (GPL-3.0) - see the [LICENSE](LICENSE) for full the full license text.
 
 You are free to use, study, modify, and distribute PartBuddy in accordance with the terms of the license. If you distribute modified versions of the software, 
 you must comply with the GPL-3.0 requirements, including providing the corresponding source code under the same license.
