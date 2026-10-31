@@ -40,13 +40,11 @@ PartBuddy is designed to provide a straightforward way to catalog components, ke
 The goal is simple: **make managing electronic components as intuitive as using them.**
 
 ## Getting Started
-
 PartBuddy is currently in active development. Installation and usage instructions will be added as the project becomes ready for use.
 
 For now, you can follow the development of the project through this repository.
 
 ## Roadmap
-
 PartBuddy is being developed incrementally, with an emphasis on building a reliable foundation before expanding its functionality.
 
 Planned development includes:
@@ -59,17 +57,58 @@ Planned development includes:
 
 The roadmap may evolve as development progresses and new ideas are explored.
 
+## Development
+
+### Project Structure
+
+```
+PartBuddy/
+├── LICENSE                        GPL3.0 License for PartBuddy
+├── CMakeLists.txt                 CMake config file for building
+├── .gitignore                     gitignore file for PartBuddy 
+├── src/                           Core utilities
+│   ├── main.cpp                       Main logic loop
+│   ├── Component.cpp                  Component structure and functionality
+│   ├── Inventory.cpp                   
+│   └── CLI.cpp                         
+├── include/                       Libraries and include files
+│   ├── Component.hpp                   Component structure and functionality
+│   ├── Inventory.hpp                   Functions for Inventory
+│   └── CLI.hpp                         Functions for CLI
+├── examples/                      PartBuddy usage examples
+├── tests/                         Tests for PartBuddy
+├── documentation/                 Documentation
+├── .github/                       GitHub templates and workflows
+|   ├── README.md                      README file for PartBuddy 
+│   ├── CONTRIBUTING.md                Contributing information
+|   ├── media/                         Media for README.md 
+│   ├── ISSUE_TEMPLATE/                Issue templates
+│   └── pull_request_template.md           PR template
+```
+
 ## Contributing
 PartBuddy is developed as part of Meridian's broader collection of software and hardware projects.
 
 As the project matures, contribution guidelines and development documentation will be made available.
 
+#### Issue Templates
+
+We provide several issue templates to help you report bugs, request features, or suggest documentation improvements:
+
+- [🐛 Bug Report](.github/ISSUE_TEMPLATE/bug_report.md)
+- [💡 Feature Request](.github/ISSUE_TEMPLATE/feature_request.md)
+- [📖 Documentation](.github/ISSUE_TEMPLATE/documentation.md)
+
 ## License
-PartBuddy is free and open-source software licensed under the GNU General Public License v3.0 (GPL-3.0).
+PartBuddy is free and open-source software licensed under the GNU General Public License v3.0 (GPL-3.0) - see the [LICENSE](LICENSE.md) for full the full license text.
 
 You are free to use, study, modify, and distribute PartBuddy in accordance with the terms of the license. If you distribute modified versions of the software, 
 you must comply with the GPL-3.0 requirements, including providing the corresponding source code under the same license.
 
-See the [LICENSE](LICENSE) file for the full license text.
+<div align="center">
 
-**- PartBuddy is a project by Meridian.**
+**[⭐ Star us on GitHub](https://github.com/Meridian-devs/PartBuddy)** • **[📝 Contribute](.github/CONTRIBUTING.md)** • **[🐛 Report Bug](.github/ISSUE_TEMPLATE/bug_report.md)** • **[💡 Request Feature](.github/ISSUE_TEMPLATE/feature_request.md)**
+
+Made with ❤️ by the Meridian team
+
+</div>
