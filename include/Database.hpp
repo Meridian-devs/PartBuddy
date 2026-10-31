@@ -4,16 +4,15 @@
 #include <sqlite3.h>
 #include <Component.hpp>
 
-/*
-    @class Database
-    @brief Manages SQLite database connection and operations.
-
-    * Responsible for establishing and managing the database connection,
-    * initializing the database, and preforming operations on component records.
-    * 
-    * The database class seperates database-specific functionality from inventory
-    * management and the CLI.
-*/
+/** 
+ * @class Database
+ * @brief Manages SQLite database connection and operations.
+ * 
+ * Responsible for establishing and managing the database connection,
+ * initializing the database, and preforming operations on component records.
+ * The database class seperates database-specific functionality from inventory
+ * management and the CLI.
+ */
 
 class Database
 {
@@ -25,14 +24,14 @@ public:
     void close();                                           // Method: Close connection to SQLite
     bool initialize();                                      // Method: Initialize the database schema
 
-/*
-    @brief Inserts a component into the database
-    
-    * Uses a prepared SQL statement to inset the supplied component info into the components table
-
-    @param component reference to the Component being inserted.
-    @return true if the insertion succeeds, false otherwise.
-*/
+/**
+ * @brief Inserts a component into the database
+ * 
+ * Uses a prepared SQL statement to inset the supplied component info into the components table
+ * 
+ * @param component reference to the Component being inserted.
+ * @return true if the insertion succeeds, false otherwise.
+ */
 
     bool addComponent(const Component& component);
 
