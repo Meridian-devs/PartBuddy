@@ -2,13 +2,13 @@
 
 #include <string>
 
-/*
-    @struct Component
-    @brief  Represents an electronic component stored in the inventory
-
-    * Contains both component-specific information and local inventory information.
-    * This struct is used to pass component data between the CLI, inventory and database layers.
-*/
+/**
+ *  @struct Component
+ *  @brief  Represents an electronic component stored in the inventory
+ * 
+ *  Contains both component-specific information and local inventory information.
+ *  This struct is used to pass component data between the CLI, inventory and database layers.
+ */
 
 struct Component
 {
