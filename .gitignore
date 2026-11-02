@@ -13,3 +13,6 @@ cmake-build-*/
 # IDE files
 .vscode/
 .idea/
+
+# Database files
+inventory.db
