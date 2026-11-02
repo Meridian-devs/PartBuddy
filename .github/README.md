@@ -23,12 +23,12 @@ Developed by Meridian, PartBuddy is built to help you spend less time organizing
 
 ## Features
 PartBuddy is being developed with the following capabilities in mind:
-  - Component Inventory — Maintain a centralized catalog of your electronic components.
-  - Component Lookup — Retrieve technical information using a component's part number.
-  - Inventory Tracking — Keep track of quantities and storage locations.
+  - Component Inventory     — Maintain a centralized catalog of your electronic components.
+  - Component Lookup        — Retrieve technical information using a component's part number.
+  - Inventory Tracking      — Keep track of quantities and storage locations.
   - Technical Documentation — Access datasheets and other relevant component information.
-  - Search & Organization — Find components quickly using part numbers, manufacturers, categories, and other attributes.
-  - Simplified Data Entry — Reduce repetitive manual entry by automatically retrieving component metadata where available.
+  - Search & Organization   — Find components quickly using part numbers, manufacturers, categories, and other attributes.
+  - Simplified Data Entry   — Reduce repetitive manual entry by automatically retrieving component metadata where available.
 
 PartBuddy is currently under development. Features and functionality are subject to change.
 
