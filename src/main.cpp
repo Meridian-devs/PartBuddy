@@ -141,6 +141,43 @@ bool handleAdd(Inventory& inventory)
 }
 
 /**
+ * @brief Prompts the user to remove a component
+ * 
+ * Collects the component's part number and passes it to the inventory layer for removal
+ * 
+ * @param inventory Inventory instance used for removal.
+ * @return true if the component was removed successfully, false otherwise.
+ */
+
+bool handleRemove(Inventory& inventory)
+{
+    std::string partNumber;
+
+    std::cout << "\n--- Remove Component ---\n";
+
+    std::cout << "Part Number: ";
+    if (!std::getline(std::cin, partNumber))
+    {
+        return false;
+    }
+        
+    if (partNumber.empty())
+    {
+        std::cout << "Part number cannot be empty.\n";
+        return false;
+    }
+    
+    if (inventory.removeComponent(partNumber))
+    {
+        std::cout << "Component removed successfully!\n";
+        return true;
+    }
+
+    std::cout << "Component not found or failed to remove.\n";
+    return false;
+}
+
+/**
  * @brief Routes a command to its corresponding handler
  * 
  * The CLI is responsible for interpreting user commands.
@@ -171,7 +208,7 @@ void handleCommand(const std::string& command, Inventory& inventory)
         // Implement changing component stock
     }
     else if (command == "remove") {
-        // Implement removing component
+        handleRemove(inventory);
     }
     else if (command.empty()) {
         // Ignore empty input

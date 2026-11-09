@@ -189,6 +189,74 @@ bool Database::addComponent(const Component& component)
     return true;
 }
 
+bool Database::removeComponent(const std::string& partNumber)
+{
+    // Ensure the database connection is active.
+    if (connection == nullptr)
+    {
+        std::cerr << "Database is not open.\n";
+        return false;
+    }
+
+    const char* sql = R"(
+        DELETE FROM components 
+        WHERE part_number = ?;
+    )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        connection,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to prepare delete: "
+                  << sqlite3_errmsg(connection) << '\n';
+        return false;
+    }
+
+    // Bind the supplied partNumber to the SQL placeholder
+    result = sqlite3_bind_text(
+        statement,
+        1,
+        partNumber.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to bind part number: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Execute DELETE statement
+    result = sqlite3_step(statement);
+
+    if (result != SQLITE_DONE)
+    {
+        std::cerr << "Failed to remove component: "
+                  << sqlite3_errmsg(connection) << '\n';
+
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Check how many rows affected
+    const int rowsAffected = sqlite3_changes(connection);
+
+    // Release the prepared statement
+    sqlite3_finalize(statement);
+
+    return rowsAffected > 0;
+}
+
 sqlite3* Database::getConnection() const
 {
     return connection;

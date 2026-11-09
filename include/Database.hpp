@@ -27,13 +27,24 @@ public:
 /**
  * @brief Inserts a component into the database
  * 
- * Uses a prepared SQL statement to inset the supplied component info into the components table
+ * Uses a prepared SQL statement to insert the supplied component info into the components table
  * 
  * @param component reference to the Component being inserted.
  * @return true if the insertion succeeds, false otherwise.
  */
 
     bool addComponent(const Component& component);
+
+/**
+ * @brief Removes a component from the database
+ * 
+ * Identifies the component using the manufactuer part number.
+ * 
+ * @param partNumber Part number of the component to remove
+ * @return true if a component was removed, false otherwise.
+ */
+
+    bool removeComponent(const std::string& partNumber);
 
     sqlite3* getConnection() const;                         // Returns the underlying SQLite connection, pointer to active SQLite database connection
 

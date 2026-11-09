@@ -13,7 +13,7 @@
 struct Component
 {
     // Component specific information
-    std::string manufacturer;           // Part Name
+    std::string manufacturer;           // Part Manufacturer
     std::string partNumber;             // Part Number
     std::string description;            // Part Description, functionality
     std::string category;               // Part type (e.g. resistor, capacitor, etc.)
