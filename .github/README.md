@@ -11,15 +11,12 @@
 
 </div>
 
-## PartBuddy
-### Your electronic components, organized.
+## PartBuddy - Your electronic components, organized
 PartBuddy is an electronic component inventory management tool designed for electronics enthusiasts, makers, and engineers.
 
 Managing an electronics collection can quickly become difficult. Components accumulate, part numbers get forgotten, datasheets become hard to find, and keeping track of what you have on hand becomes a project of its own.
 
-PartBuddy aims to make component management simpler by bringing inventory tracking and technical component information into one place.
-
-Developed by Meridian, PartBuddy is built to help you spend less time organizing components and more time building.
+PartBuddy aims to make component management simpler by bringing inventory tracking and technical component information into one place. Built to help you spend less time organizing components and more time building.
 
 ## Features
 PartBuddy is being developed with the following capabilities in mind:
@@ -30,7 +27,7 @@ PartBuddy is being developed with the following capabilities in mind:
   - Search & Organization   — Find components quickly using part numbers, manufacturers, categories, and other attributes.
   - Simplified Data Entry   — Reduce repetitive manual entry by automatically retrieving component metadata where available.
 
-PartBuddy is currently under development. Features and functionality are subject to change.
+**PartBuddy is currently under development**. Features and functionality are subject to change.
 
 ## Why PartBuddy?
 Whether you're working on a breadboard prototype, designing a PCB, or maintaining a personal component collection, knowing what parts you have, and where to find them, is essential.
@@ -93,7 +90,7 @@ As the project matures, contribution guidelines and development documentation wi
 
 #### Issue Templates
 
-We provide several issue templates to help you report bugs, request features, or suggest documentation improvements:
+We provide several issue templates to help you report bugs, request features, or suggest documentation improvements (NOT AVAILABLE AT THE MOMENT):
 
 - [🐛 Bug Report](.github/ISSUE_TEMPLATE/bug_report.md)
 - [💡 Feature Request](.github/ISSUE_TEMPLATE/feature_request.md)
