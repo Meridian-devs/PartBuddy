@@ -44,10 +44,14 @@ bool Inventory::removeComponent(const std::string& partNumber)
 }
 
 /**
- * @brief Lists the component inventory
+ * @brief Retrieves all components in the inventory
  * 
- * @param
- * @return
+ * @return A vector containing all inventory components
  */
+
+std::vector<Component> Inventory::getComponents() const
+{
+    return database.getComponents();
+}
 
 //bool Inventory::listComponents()

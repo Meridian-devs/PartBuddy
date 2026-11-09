@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <iomanip>
 
 #include <Database.hpp>
 #include <Inventory.hpp>
@@ -143,7 +144,8 @@ bool handleAdd(Inventory& inventory)
 /**
  * @brief Prompts the user to remove a component
  * 
- * Collects the component's part number and passes it to the inventory layer for removal
+ * Collects the component's part number and passes it to the inventory layer for removal.
+ * Confirms with the user if this action should be preformed.
  * 
  * @param inventory Inventory instance used for removal.
  * @return true if the component was removed successfully, false otherwise.
@@ -191,6 +193,48 @@ bool handleRemove(Inventory& inventory)
     return false;
 }
 
+
+/**
+ * @brief Displays all components currently in the inventory.
+ *
+ * @param inventory Inventory instance used to retrieve components.
+ */
+void handleList(Inventory& inventory)
+{
+    std::vector<Component> components = inventory.getComponents();
+
+    std::cout << "\n--- Component Inventory ---\n";
+
+    // Check whether the inventory contains any components.
+    if (components.empty())
+    {
+        std::cout << "Your inventory is empty.\n";
+        return;
+    }
+
+    // Display the table headings.
+    std::cout << std::left
+              << std::setw(18) << "Part Number"
+              << std::setw(20) << "Manufacturer"
+              << std::setw(15) << "Category"
+              << std::setw(10) << "Quantity"
+              << "Location\n";
+
+    std::cout << std::string(80, '-') << '\n';
+
+    // Display each component.
+    for (const Component& component : components)
+    {
+        std::cout << std::left
+                  << std::setw(18) << component.partNumber
+                  << std::setw(20) << component.manufacturer
+                  << std::setw(15) << component.category
+                  << std::setw(10) << component.quantity
+                  << component.location << "\n";
+    }
+}
+
+
 /**
  * @brief Routes a command to its corresponding handler
  * 
@@ -210,16 +254,16 @@ void handleCommand(const std::string& command, Inventory& inventory)
         handleAdd(inventory);
     }
     else if (command == "list") {
-        // Implement list all components, future: specific component type
+        handleList(inventory);                              // Future: specific component type
     }
     else if (command == "search") {
-        // Implement component search
+        std::cout << "Not yet implemented...\n";            // Implement component search
     }
     else if (command == "edit") {
-        // Implement edit component details
+        std::cout << "Not yet implemented...\n";            // Implement edit component details
     }
     else if (command == "stock") {
-        // Implement changing component stock
+        std::cout << "Not yet implemented...\n";            // Implement changing component stock
     }
     else if (command == "remove") {
         handleRemove(inventory);

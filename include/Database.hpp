@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <sqlite3.h>
 #include <Component.hpp>
 
@@ -45,6 +46,16 @@ public:
  */
 
     bool removeComponent(const std::string& partNumber);
+
+
+/**
+ * @brief Lists the components added to the inventory database
+ * 
+ * @param
+ * @return true if components were listed successfully, false otherwise.
+ */
+
+    std::vector<Component> getComponents() const;
 
     sqlite3* getConnection() const;                         // Returns the underlying SQLite connection, pointer to active SQLite database connection
 

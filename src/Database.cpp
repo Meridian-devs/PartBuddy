@@ -257,6 +257,94 @@ bool Database::removeComponent(const std::string& partNumber)
     return rowsAffected > 0;
 }
 
+/**
+ * @brief Retrieves all components from the database
+ * 
+ * Executes a SELECT query and converts returned rows into an Component obj.
+ * 
+ * @return A vector containing all retrieved components
+ */
+
+std::vector<Component> Database::getComponents() const
+{
+    std::vector<Component> components;
+
+    if (connection == nullptr)
+    {
+        std::cerr << "Database is not open.\n";
+        return components;
+    }
+
+    const char* sql = R"(
+        SELECT id, 
+        manufacturer, 
+        part_number, 
+        description, 
+        category, 
+        package, 
+        datasheet_url, 
+        quantity, 
+        location
+        FROM components;
+        )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    // Prepare SQL statement
+    int result = sqlite3_prepare_v2(
+        connection,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to retrieve components: " << sqlite3_errmsg(connection) << "\n";
+        return components;
+    }
+
+    // Read each row returned by query
+    while ((result = sqlite3_step(statement)) == SQLITE_ROW)
+    {
+        Component component;
+
+        // Retrive integer columns
+        component.id = sqlite3_column_int(statement, 0);
+        component.quantity = sqlite3_column_int(statement, 7);
+
+        // Retrieve text columns, may return NULL for columns containing NULL
+        auto getText = [&](int column) -> std::string
+        {
+            const unsigned char* value = sqlite3_column_text(statement, column);
+            return value ? reinterpret_cast<const char*>(value) : "";
+        };
+
+        component.manufacturer = getText(1);
+        component.partNumber = getText(2);
+        component.description = getText(3);
+        component.category = getText(4);
+        component.package = getText(5);
+        component.datasheetURL = getText(6);
+        component.location = getText(8);
+
+        // Add the completed component to the result vector
+        components.push_back(component);
+    }
+
+    // Check whether the query finished successfully
+    if (result != SQLITE_DONE)
+    {
+        std::cerr << "Error retrieving components: " << sqlite3_errmsg(connection) << "\n";
+        components.clear();
+    }
+
+    // Released the prepared statement
+    sqlite3_finalize(statement);
+    return components;
+}
+
 sqlite3* Database::getConnection() const
 {
     return connection;
