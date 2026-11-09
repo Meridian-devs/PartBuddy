@@ -152,6 +152,7 @@ bool handleAdd(Inventory& inventory)
 bool handleRemove(Inventory& inventory)
 {
     std::string partNumber;
+    std::string confirmation;
 
     std::cout << "\n--- Remove Component ---\n";
 
@@ -167,6 +168,19 @@ bool handleRemove(Inventory& inventory)
         return false;
     }
     
+    // Added handling to ensure removal is wanted
+    std::cout << "Are you sure you want to remove " << partNumber << " ? [Y/N]: ";
+    if (!std::getline(std::cin, confirmation))
+    {
+        return false;
+    }
+
+    if (confirmation != "Y" && confirmation != "y")
+    {
+        std::cout << "Remove cancelled.\n";
+        return false;
+    }
+
     if (inventory.removeComponent(partNumber))
     {
         std::cout << "Component removed successfully!\n";
