@@ -39,14 +39,16 @@ void printHelp()    // Displays the available commands
     std::cout << R"(
     Available Commands:
         add     Add a component
-        list    List all components
-        search  Search for components
-        edit    Edit a component
-        stock   Adjust component quantity
         remove  Remove a component
+        list    List all components
 
         help    Display this menu
         exit    Close PartBuddy
+
+        ** Not yet implemented... **
+        search  Search for components
+        edit    Edit a component
+        stock   Adjust component quantity
 )";
 }
 
@@ -199,6 +201,7 @@ bool handleRemove(Inventory& inventory)
  *
  * @param inventory Inventory instance used to retrieve components.
  */
+
 void handleList(Inventory& inventory)
 {
     std::vector<Component> components = inventory.getComponents();
@@ -234,12 +237,11 @@ void handleList(Inventory& inventory)
     }
 }
 
-
 /**
  * @brief Routes a command to its corresponding handler
  * 
  * The CLI is responsible for interpreting user commands.
- * Inventory operations are delegated to the inventory class
+ * Inventory operations are delegated to the inventory class.
  * 
  * @param command Command entered by the user.
  * @param inventory Inventory instance used by command handlers

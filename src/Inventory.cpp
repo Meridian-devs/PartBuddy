@@ -53,5 +53,3 @@ std::vector<Component> Inventory::getComponents() const
 {
     return database.getComponents();
 }
-
-//bool Inventory::listComponents()
