@@ -349,3 +349,97 @@ sqlite3* Database::getConnection() const
 {
     return connection;
 }
+
+
+/**
+ * @brief
+ * 
+ * @return
+ */
+
+ bool Database:: updateQuantity(const std::string& partNumber, int quantity) {
+
+    if (connection == nullptr) {
+
+        std::cerr << "Database is not open.\n";
+        return false;
+
+    }
+
+    const char* sql = R"(
+        UPDATE components 
+        SET quantity = ?
+        WHERE part_number = ?;
+        
+    )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        connection,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to prepare update quantity: "
+                  << sqlite3_errmsg(connection) << '\n';
+        return false;
+    }
+
+    // Bind the supplied quantity to the SQL placeholder
+    result = sqlite3_bind_int(
+        statement,
+        1,
+        quantity
+    );
+
+
+     if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to update quantity: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Bind the supplied partNumber to the SQL placeholder
+    result = sqlite3_bind_text(
+        statement,
+        2,
+        partNumber.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to update quantity: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+
+    // Execute statement
+    result = sqlite3_step(statement);
+
+    if (result != SQLITE_DONE)
+    {
+        std::cerr << "Failed to update component quantity: "
+                  << sqlite3_errmsg(connection) << '\n';
+
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Check how many rows affected
+    const int rowsAffected = sqlite3_changes(connection);
+
+    // Release the prepared statement
+    sqlite3_finalize(statement);
+
+    return rowsAffected > 0;
+
+ }

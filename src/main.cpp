@@ -41,6 +41,7 @@ void printHelp()    // Displays the available commands
         add     Add a component
         remove  Remove a component
         list    List all components
+        stock   Adjust component quantity
 
         help    Display this menu
         exit    Close PartBuddy
@@ -48,7 +49,6 @@ void printHelp()    // Displays the available commands
         ** Not yet implemented... **
         search  Search for components
         edit    Edit a component
-        stock   Adjust component quantity
 )";
 }
 
@@ -238,6 +238,108 @@ void handleList(Inventory& inventory)
 }
 
 /**
+ * @brief Updates quantity of components currently in the inventory.
+ *
+ * @param inventory Inventory instance used to retrieve components.
+ */
+
+bool handleStock(Inventory& inventory)
+{
+    std::string partNumber;
+    std::string confirmation;
+    std::vector<Component> components = inventory.getComponents();
+
+    std::cout << "\n--- Update Component Quantity---\n";
+
+    std::cout << "Part Number: ";
+    if (!std::getline(std::cin, partNumber))
+    {
+        return false;
+    }
+        
+    if (partNumber.empty())
+    {
+        std::cout << "Part number cannot be empty.\n";
+        return false;
+    }
+
+    bool part_found = false;
+
+    // Search through each component.
+    for (const Component& component : components)
+    {
+    
+        if (partNumber == component.partNumber) {
+
+            std::cout << "Current Quantity: " << component.quantity << "\n";
+            part_found = true;
+            break;
+        }
+
+    }
+
+    if (part_found == false) {
+
+        std::cout << "Part number cannot be found.\n";
+        return false;
+
+    }
+
+    int quantity;
+
+    std::cout << "Quantity: ";
+
+    std::string quantityInput;
+    if (!std::getline(std::cin, quantityInput))
+        return false;
+
+    try
+    {
+        // Track how many characters were used by std::stoi
+        // Allows us to reject input such as "12abc".
+        std::size_t charactersRead = 0;
+
+        quantity = std::stoi(quantityInput, &charactersRead);
+
+        if (charactersRead != quantityInput.size() || quantity < 0)
+        {
+            std::cout << "Quantity must be a non-negative integer.\n";
+            return false;
+        }
+
+    }
+    catch (const std::exception&)
+    {
+        // std::stoi throws if the input cannot be converted to an integer or is outside the supported range.
+        std::cout << "Invalid quantity. Enter a whole number.\n";
+        return false;
+    }
+
+
+    // Added handling to ensure quantity is entered correctly
+    std::cout << "Update Quantity for " << partNumber << "? [Y/N]: ";
+    if (!std::getline(std::cin, confirmation))
+    {
+        return false;
+    }
+
+    if (confirmation != "Y" && confirmation != "y")
+    {
+        std::cout << "Quantity update cancelled.\n";
+        return false;
+    }
+
+    if (inventory.updateQuantity(partNumber, quantity))
+    {
+        std::cout << "Component quantity updated successfully!\n";
+        return true;
+    }
+
+    std::cout << "Component not found or failed to update quantity.\n";
+    return false;
+}
+
+/**
  * @brief Routes a command to its corresponding handler
  * 
  * The CLI is responsible for interpreting user commands.
@@ -265,7 +367,7 @@ void handleCommand(const std::string& command, Inventory& inventory)
         std::cout << "Not yet implemented...\n";            // Implement edit component details
     }
     else if (command == "stock") {
-        std::cout << "Not yet implemented...\n";            // Implement changing component stock
+        handleStock(inventory);       
     }
     else if (command == "remove") {
         handleRemove(inventory);

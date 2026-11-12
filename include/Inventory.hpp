@@ -53,7 +53,7 @@ public:
      * 
      * @param partNumber Manufacturer's part number identifying the component to remove.
      * @param quantity   New quantity for the component
-     * @return ture if the quantity was updated successfully, false otherwise
+     * @return true if the quantity was updated successfully, false otherwise
      */
     bool updateQuantity(const std::string& partNumber, int quantity);
 

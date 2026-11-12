@@ -2,7 +2,7 @@
 #include "Database.hpp"
 
 /**
- * @brief Construccts an Inventory object
+ * @brief Constructs an Inventory object
  * 
  * Stores a reference to the supplied Database instance.
  * The inventory object does not create or own the database
@@ -52,4 +52,19 @@ bool Inventory::removeComponent(const std::string& partNumber)
 std::vector<Component> Inventory::getComponents() const
 {
     return database.getComponents();
+}
+
+
+/**
+     * @brief Updates the quantity of a component
+     * 
+     * @param partNumber Manufacturer's part number identifying the component to remove.
+     * @param quantity   New quantity for the component
+     * @return true if the quantity was updated successfully, false otherwise
+     */
+bool Inventory:: updateQuantity(const std::string& partNumber, int quantity)
+{
+
+    return database.updateQuantity(partNumber, quantity);
+
 }

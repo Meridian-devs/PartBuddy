@@ -37,9 +37,21 @@ public:
     bool addComponent(const Component& component);
 
 /**
+ * @brief Updates component quantity in the database
+ * 
+ * Updates the quantity of a component using the manufacturer part number.
+ * 
+ * @param partNumber Part number of the component to update
+ * @param quantity   New quantity for the component
+ * @return true if component quantity was updated successfully, false otherwise.
+ */
+
+    bool updateQuantity(const std::string& partNumber, int quantity);
+
+/**
  * @brief Removes a component from the database
  * 
- * Identifies the component using the manufactuer part number.
+ * Identifies the component using the manufacturer part number.
  * 
  * @param partNumber Part number of the component to remove
  * @return true if a component was removed, false otherwise.
