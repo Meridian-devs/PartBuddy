@@ -70,10 +70,6 @@ bool handleAdd(Inventory& inventory)
 
     std::cout << "\n--- Add Component ---\n";
 
-    std::cout << "Manufacturer: ";
-    if (!std::getline(std::cin, component.manufacturer))
-        return false;
-
     std::cout << "Part number: ";
     if (!std::getline(std::cin, component.partNumber))
         return false;
@@ -95,6 +91,10 @@ bool handleAdd(Inventory& inventory)
         }
 
     }
+
+    std::cout << "Manufacturer: ";
+    if (!std::getline(std::cin, component.manufacturer))
+        return false;
 
     std::cout << "Description: ";
     if (!std::getline(std::cin, component.description))
