@@ -64,7 +64,5 @@ std::vector<Component> Inventory::getComponents() const
      */
 bool Inventory:: updateQuantity(const std::string& partNumber, int quantity)
 {
-
     return database.updateQuantity(partNumber, quantity);
-
 }

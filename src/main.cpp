@@ -59,6 +59,8 @@ void printHelp()    // Displays the available commands
  * Component information will be auto-filled when web-scraping and datasheet parsing is
  * implemented (this is a minimal working version).
  * 
+ * Retrieves a list of added components to check for duplicated additions.
+ * 
  * @param inventory Inventory instance used to add the component
  * @return true if the component is added successfully, false otherwise.
  */
@@ -83,13 +85,11 @@ bool handleAdd(Inventory& inventory)
     // Search through each component for duplicate part numbers.
     for (const Component& existingComponent : components)
     {
-    
-        if (existingComponent.partNumber == component.partNumber) {
-
+        if (existingComponent.partNumber == component.partNumber) 
+        {
             std::cout << "Part number already exists.\n";
             return false;
         }
-
     }
 
     std::cout << "Manufacturer: ";
@@ -131,7 +131,6 @@ bool handleAdd(Inventory& inventory)
             std::cout << "Quantity must be a non-negative integer.\n";
             return false;
         }
-
         component.quantity = quantity;
     }
     catch (const std::exception&)
@@ -219,7 +218,7 @@ void handleList(Inventory& inventory)
 {
     std::vector<Component> components = inventory.getComponents();
 
-    std::cout << "\n--- Component Inventory ---\n";
+    std::cout << "\n\t\t\t--- Component Inventory ---\n\n";
 
     // Check whether the inventory contains any components.
     if (components.empty())
@@ -252,6 +251,8 @@ void handleList(Inventory& inventory)
 
 /**
  * @brief Updates quantity of components currently in the inventory.
+ * 
+ * Checks if the part requested is in the inventory. (Prompt for add if not?)
  *
  * @param inventory Inventory instance used to retrieve components.
  */
@@ -276,30 +277,27 @@ bool handleStock(Inventory& inventory)
         return false;
     }
 
+    // Check if part is in inventory
     bool part_found = false;
 
     // Search through each component.
     for (const Component& component : components)
     {
-    
-        if (partNumber == component.partNumber) {
-
+        if (partNumber == component.partNumber) 
+        {
             std::cout << "Current Quantity: " << component.quantity << "\n";
             part_found = true;
             break;
         }
-
     }
 
-    if (part_found == false) {
-
+    if (part_found == false) 
+    {
         std::cout << "Part number cannot be found.\n";
         return false;
-
     }
 
     int quantity;
-
     std::cout << "Quantity: ";
 
     std::string quantityInput;
@@ -319,7 +317,6 @@ bool handleStock(Inventory& inventory)
             std::cout << "Quantity must be a non-negative integer.\n";
             return false;
         }
-
     }
     catch (const std::exception&)
     {
@@ -327,7 +324,6 @@ bool handleStock(Inventory& inventory)
         std::cout << "Invalid quantity. Enter a whole number.\n";
         return false;
     }
-
 
     // Added handling to ensure quantity is entered correctly
     std::cout << "Update Quantity for " << partNumber << "? [Y/N]: ";
@@ -380,7 +376,7 @@ void handleCommand(const std::string& command, Inventory& inventory)
         std::cout << "Not yet implemented...\n";            // Implement edit component details
     }
     else if (command == "stock") {
-        handleStock(inventory);       
+        handleStock(inventory);
     }
     else if (command == "remove") {
         handleRemove(inventory);
