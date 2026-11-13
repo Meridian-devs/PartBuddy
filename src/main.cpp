@@ -66,6 +66,7 @@ void printHelp()    // Displays the available commands
 bool handleAdd(Inventory& inventory)
 {
     Component component;
+    std::vector<Component> components = inventory.getComponents();
 
     std::cout << "\n--- Add Component ---\n";
 
@@ -81,6 +82,18 @@ bool handleAdd(Inventory& inventory)
     {
         std::cout << "Part number cannot be empty.\n";
         return false;
+    }
+
+    // Search through each component for duplicate part numbers.
+    for (const Component& existingComponent : components)
+    {
+    
+        if (existingComponent.partNumber == component.partNumber) {
+
+            std::cout << "Part number already exists.\n";
+            return false;
+        }
+
     }
 
     std::cout << "Description: ";
