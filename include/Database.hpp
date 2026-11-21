@@ -63,12 +63,20 @@ public:
 /**
  * @brief Lists the components added to the inventory database
  * 
- * @param
- * @return true if components were listed successfully, false otherwise.
+ * @return list of compoenents, emppty if none added.
  */
 
     std::vector<Component> getComponents() const;
 
+/**
+ * @brief Seaches for a specific component in the database based on partnumber
+ * 
+ * @return list of components that match the search term
+ */
+
+    std::vector<Component> searchComponent(const std::string& query);
+
+    
     sqlite3* getConnection() const;                         // Returns the underlying SQLite connection, pointer to active SQLite database connection
 
 private:

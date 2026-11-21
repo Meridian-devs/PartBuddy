@@ -92,8 +92,7 @@ bool Database::initialize()
 
     if (result != SQLITE_OK)
     {
-        std::cerr << "Failed to initialize database: "
-                  << errorMessage << '\n';
+        std::cerr << "Failed to initialize database: " << errorMessage << '\n';
 
         sqlite3_free(errorMessage);
         return false;
@@ -130,8 +129,7 @@ bool Database::addComponent(const Component& component)
 
     if (result != SQLITE_OK)
     {
-        std::cerr << "Failed to prepare insert: "
-                  << sqlite3_errmsg(connection) << '\n';
+        std::cerr << "Failed to prepare insert: " << sqlite3_errmsg(connection) << '\n';
 
         return false;
     }
@@ -177,8 +175,7 @@ bool Database::addComponent(const Component& component)
 
     if (result != SQLITE_DONE)
     {
-        std::cerr << "Failed to insert component: "
-                  << sqlite3_errmsg(connection) << '\n';
+        std::cerr << "Failed to insert component: " << sqlite3_errmsg(connection) << '\n';
 
         sqlite3_finalize(statement);
         return false;
@@ -215,8 +212,7 @@ bool Database::removeComponent(const std::string& partNumber)
 
     if (result != SQLITE_OK)
     {
-        std::cerr << "Failed to prepare delete: "
-                  << sqlite3_errmsg(connection) << '\n';
+        std::cerr << "Failed to prepare delete: " << sqlite3_errmsg(connection) << '\n';
         return false;
     }
 
@@ -241,8 +237,7 @@ bool Database::removeComponent(const std::string& partNumber)
 
     if (result != SQLITE_DONE)
     {
-        std::cerr << "Failed to remove component: "
-                  << sqlite3_errmsg(connection) << '\n';
+        std::cerr << "Failed to remove component: " << sqlite3_errmsg(connection) << '\n';
 
         sqlite3_finalize(statement);
         return false;
@@ -343,6 +338,113 @@ std::vector<Component> Database::getComponents() const
     // Released the prepared statement
     sqlite3_finalize(statement);
     return components;
+}
+
+/**
+ * @brief Retrives components that are similar to the search query given
+ * 
+ * Executes a SELECT from components WHERE the given part_number is LIKE
+ * the entries in the database. Thus, will return components similar to the
+ * query, not just exact matches.
+ * 
+ * @return A vector containing all close matches to the query
+ */
+
+std::vector<Component> Database::searchComponent(const std::string& query)
+{
+    std::vector <Component> results;
+
+    // Ensure the database connection is active.
+    if (connection == nullptr)
+    {
+        std::cerr << "Database is not open.\n";
+        return results;
+    }
+
+    const char* sql = R"(
+        SELECT id, 
+        manufacturer, 
+        part_number, 
+        description, 
+        category, 
+        package, 
+        datasheet_url, 
+        quantity, 
+        location
+        FROM components
+        WHERE part_number LIKE '%' || ? || '%';
+        )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    // Prepare SQL statement
+    int result = sqlite3_prepare_v2(
+        connection,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to retrieve component: " << sqlite3_errmsg(connection) << "\n";
+        return results;
+    }
+
+    // Bind the supplied partNumber to the SQL placeholder
+    result = sqlite3_bind_text(
+        statement,
+        1,
+        query.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to bind search query: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return results;
+    }
+
+    while ((result = sqlite3_step(statement)) == SQLITE_ROW)
+    {
+        Component component;
+
+        // Retrieve integer values
+        component.id = sqlite3_column_int(statement, 0);
+        component.quantity = sqlite3_column_int(statement, 7);
+
+        // Safely retrieve text values
+        auto getText = [&](int column) -> std::string
+        {
+            const unsigned char* value = sqlite3_column_text(statement, column);
+            return value ? reinterpret_cast<const char*>(value): "";
+        };
+
+        component.manufacturer = getText(1);
+        component.partNumber = getText(2);
+        component.description = getText(3);
+        component.category = getText(4);
+        component.package = getText(5);
+        component.datasheetURL = getText(6);
+        component.location = getText(8);
+
+        // Store the completed component
+        results.push_back(component);
+    }
+
+    if (result != SQLITE_DONE)
+    {
+        std::cerr << "Error searching components: " << sqlite3_errmsg(connection) << "\n";
+        results.clear();
+    }
+
+    // Release the prepared statement
+    sqlite3_finalize(statement);
+
+    return results;
 }
 
 sqlite3* Database::getConnection() const

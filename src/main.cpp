@@ -41,13 +41,13 @@ void printHelp()    // Displays the available commands
         add     Add a component
         remove  Remove a component
         list    List all components
+        search  Search for components
         stock   Adjust component quantity
 
         help    Display this menu
         exit    Close PartBuddy
 
         ** Not yet implemented... **
-        search  Search for components
         edit    Edit a component
 )";
 }
@@ -349,6 +349,65 @@ bool handleStock(Inventory& inventory)
 }
 
 /**
+ * @brief Searches for a specific component in the inventory
+ * 
+ * Prompts the user for the part number they are looking for, will return
+ * similar components, not exact matches
+ * 
+ * @param inventory Inventory instance used to retrieve component information.
+ */
+
+bool  handleSearch(Inventory& inventory)
+{
+    std::string query;
+    std::cout << "Enter the part number: ";
+
+    if (!std::getline(std::cin, query))
+    {
+        return false;
+    }
+
+    if (query.empty())
+    {
+        std::cout << "Search query cannot be empty.\n";
+        return false;
+    }
+
+    // Make sure the search is done AFTER receiving query
+    std::vector<Component> results = inventory.searchComponent(query);
+
+    if (results.empty())
+    {
+        std::cout << "No matching components.\n";
+        return false;
+    }
+
+    std::cout << "\nFound " << results.size() << " matching component(s).\n\n";
+
+    // Display the table headings.
+    std::cout << std::left
+              << std::setw(18) << "Part Number"
+              << std::setw(20) << "Manufacturer"
+              << std::setw(15) << "Category"
+              << std::setw(10) << "Quantity"
+              << "Location\n";
+
+    std::cout << std::string(80, '-') << '\n';
+
+    for (const Component& component : results)
+    {
+        std::cout << std::left
+                  << std::setw(18) << component.partNumber
+                  << std::setw(20) << component.manufacturer
+                  << std::setw(15) << component.category
+                  << std::setw(10) << component.quantity
+                  << component.location << "\n";
+    }
+
+    return true;
+}
+
+/**
  * @brief Routes a command to its corresponding handler
  * 
  * The CLI is responsible for interpreting user commands.
@@ -370,7 +429,7 @@ void handleCommand(const std::string& command, Inventory& inventory)
         handleList(inventory);                              // Future: specific component type
     }
     else if (command == "search") {
-        std::cout << "Not yet implemented...\n";            // Implement component search
+        handleSearch(inventory);
     }
     else if (command == "edit") {
         std::cout << "Not yet implemented...\n";            // Implement edit component details

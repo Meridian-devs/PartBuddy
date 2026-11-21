@@ -54,15 +54,27 @@ std::vector<Component> Inventory::getComponents() const
     return database.getComponents();
 }
 
-
 /**
-     * @brief Updates the quantity of a component
-     * 
-     * @param partNumber Manufacturer's part number identifying the component to remove.
-     * @param quantity   New quantity for the component
-     * @return true if the quantity was updated successfully, false otherwise
-     */
+* @brief Updates the quantity of a component
+* 
+* @param partNumber Manufacturer's part number identifying the component to remove.
+* @param quantity   New quantity for the component
+* @return true if the quantity was updated successfully, false otherwise
+*/
+
 bool Inventory:: updateQuantity(const std::string& partNumber, int quantity)
 {
     return database.updateQuantity(partNumber, quantity);
+}
+
+/**
+ * @brief Searches for a specific component in the inventory
+ * 
+ * @param query Manufacturer's part number to locate the component
+ * @return A vector containing the components that closely match 
+ */
+
+std::vector<Component> Inventory::searchComponent(const std::string& query) const
+{
+    return database.searchComponent(query);
 }
