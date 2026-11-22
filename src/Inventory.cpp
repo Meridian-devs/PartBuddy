@@ -62,7 +62,7 @@ std::vector<Component> Inventory::getComponents() const
 * @return true if the quantity was updated successfully, false otherwise
 */
 
-bool Inventory:: updateQuantity(const std::string& partNumber, int quantity)
+bool Inventory::updateQuantity(const std::string& partNumber, int quantity)
 {
     return database.updateQuantity(partNumber, quantity);
 }

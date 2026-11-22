@@ -452,27 +452,29 @@ sqlite3* Database::getConnection() const
     return connection;
 }
 
-
 /**
- * @brief
+ * @brief Updates component quantity
  * 
- * @return
+ * Searches the database based on partnumber, prompts the user
+ * for the new quantity of the component
+ * 
+ * @param partNumber The components part number that you are updating
+ * @param quantity The new quanity of the component that you are updating
+ * @return True if the value was updated successfully, false otherwise.
  */
 
- bool Database:: updateQuantity(const std::string& partNumber, int quantity) {
+ bool Database::updateQuantity(const std::string& partNumber, int quantity) {
 
-    if (connection == nullptr) {
-
+    if (connection == nullptr) 
+    {
         std::cerr << "Database is not open.\n";
         return false;
-
     }
 
     const char* sql = R"(
         UPDATE components 
         SET quantity = ?
-        WHERE part_number = ?;
-        
+        WHERE part_number = ?; 
     )";
 
     sqlite3_stmt* statement = nullptr;
@@ -499,8 +501,7 @@ sqlite3* Database::getConnection() const
         quantity
     );
 
-
-     if (result != SQLITE_OK)
+    if (result != SQLITE_OK)
     {
         std::cerr << "Failed to update quantity: " << sqlite3_errmsg(connection) << "\n";
         sqlite3_finalize(statement);
@@ -523,15 +524,12 @@ sqlite3* Database::getConnection() const
         return false;
     }
 
-
     // Execute statement
     result = sqlite3_step(statement);
 
     if (result != SQLITE_DONE)
     {
-        std::cerr << "Failed to update component quantity: "
-                  << sqlite3_errmsg(connection) << '\n';
-
+        std::cerr << "Failed to update component quantity: " << sqlite3_errmsg(connection) << '\n';
         sqlite3_finalize(statement);
         return false;
     }
@@ -543,5 +541,4 @@ sqlite3* Database::getConnection() const
     sqlite3_finalize(statement);
 
     return rowsAffected > 0;
-
- }
+}
