@@ -15,7 +15,7 @@
 
 void printWelcome()
 {
-    std::cout << R"(
+    std::cout << "\033[1;32m" << R"(
                  .*%%%-..                           
             .:*#%%%%%%%%%%-..                      
            .#@%%%%%%%%%%%%%%%#-..           888888ba                      dP    888888ba                 dP       dP
@@ -45,6 +45,7 @@ void printHelp()    // Displays the available commands
         stock   Adjust component quantity
 
         help    Display this menu
+        clear   Clear command line (scroll up for prev. cmd's)
         exit    Close PartBuddy
 
         ** Not yet implemented... **
@@ -440,9 +441,14 @@ void handleCommand(const std::string& command, Inventory& inventory)
     else if (command == "remove") {
         handleRemove(inventory);
     }
+    else if (command == "clear") {
+        fputs("\x1b[1;1H\x1b[2J", stdout);
+        fflush(stdout);
+    }
     else if (command.empty()) {
         // Ignore empty input
     }
+
     else {
         std::cout << "Unknown Command: " << command << "\n";
         std::cout << "Type Help for available commands.\n";
@@ -508,7 +514,7 @@ int main()
 
         handleCommand(command, inventory);
     }
-    std::cout << "\nGoodbye!\n";                            // If exit requested, print goodbye message
+    std::cout << "\nGoodbye!\n" << "\033[0m\n";             // If exit requested, print goodbye message
     return 0;
 }
 
