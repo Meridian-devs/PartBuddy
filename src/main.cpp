@@ -75,7 +75,15 @@ bool handleAdd(Inventory& inventory)
 
     std::cout << "Part number: ";
     if (!std::getline(std::cin, component.partNumber))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     if (component.partNumber.empty())
     {
@@ -95,29 +103,77 @@ bool handleAdd(Inventory& inventory)
 
     std::cout << "Manufacturer: ";
     if (!std::getline(std::cin, component.manufacturer))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     std::cout << "Description: ";
     if (!std::getline(std::cin, component.description))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     std::cout << "Category: ";
     if (!std::getline(std::cin, component.category))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     std::cout << "Package: ";
     if (!std::getline(std::cin, component.package))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     std::cout << "Datasheet URL: ";
     if (!std::getline(std::cin, component.datasheetURL))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     std::cout << "Quantity: ";
 
     std::string quantityInput;
     if (!std::getline(std::cin, quantityInput))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     try
     {
@@ -143,7 +199,15 @@ bool handleAdd(Inventory& inventory)
 
     std::cout << "Location: ";
     if (!std::getline(std::cin, component.location))
+    {
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     // Pass the completed Component object to the Inventory layer.
     if (inventory.addComponent(component))
