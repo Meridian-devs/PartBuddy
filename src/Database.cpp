@@ -447,11 +447,6 @@ std::vector<Component> Database::searchComponent(const std::string& query)
     return results;
 }
 
-sqlite3* Database::getConnection() const
-{
-    return connection;
-}
-
 /**
  * @brief Updates component quantity
  * 
@@ -541,4 +536,9 @@ sqlite3* Database::getConnection() const
     sqlite3_finalize(statement);
 
     return rowsAffected > 0;
+}
+
+sqlite3* Database::getConnection() const
+{
+    return connection;
 }
