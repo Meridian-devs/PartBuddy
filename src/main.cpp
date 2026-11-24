@@ -45,6 +45,7 @@ void printHelp()    // Displays the available commands
         stock   Adjust component quantity
 
         help    Display this menu
+        cancel  Returns to home menu
         clear   Clear command line (scroll up for prev. cmd's)
         exit    Close PartBuddy
 
@@ -74,9 +75,9 @@ bool handleAdd(Inventory& inventory)
     std::cout << "\n--- Add Component ---\n";
 
     std::cout << "Part number: ";
-    if (!std::getline(std::cin, component.partNumber))
+    if (!std::getline(std::cin, component.partNumber) || component.partNumber == "cancel")
     {
-        if (std::cin.eof())
+        if (component.partNumber == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -102,9 +103,9 @@ bool handleAdd(Inventory& inventory)
     }
 
     std::cout << "Manufacturer: ";
-    if (!std::getline(std::cin, component.manufacturer))
+    if (!std::getline(std::cin, component.manufacturer) || component.manufacturer == "cancel")
     {
-        if (std::cin.eof())
+        if (component.manufacturer == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -114,9 +115,9 @@ bool handleAdd(Inventory& inventory)
     }
 
     std::cout << "Description: ";
-    if (!std::getline(std::cin, component.description))
+    if (!std::getline(std::cin, component.description) || component.description == "cancel")
     {
-        if (std::cin.eof())
+        if (component.description == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -126,9 +127,9 @@ bool handleAdd(Inventory& inventory)
     }
 
     std::cout << "Category: ";
-    if (!std::getline(std::cin, component.category))
+    if (!std::getline(std::cin, component.category) || component.category == "cancel")
     {
-        if (std::cin.eof())
+        if (component.category == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -138,9 +139,9 @@ bool handleAdd(Inventory& inventory)
     }
 
     std::cout << "Package: ";
-    if (!std::getline(std::cin, component.package))
+    if (!std::getline(std::cin, component.package) || component.package == "cancel")
     {
-        if (std::cin.eof())
+        if (component.package == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -150,9 +151,9 @@ bool handleAdd(Inventory& inventory)
     }
 
     std::cout << "Datasheet URL: ";
-    if (!std::getline(std::cin, component.datasheetURL))
+    if (!std::getline(std::cin, component.datasheetURL) || component.datasheetURL == "cancel")
     {
-        if (std::cin.eof())
+        if (component.datasheetURL == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -164,9 +165,9 @@ bool handleAdd(Inventory& inventory)
     std::cout << "Quantity: ";
 
     std::string quantityInput;
-    if (!std::getline(std::cin, quantityInput))
+    if (!std::getline(std::cin, quantityInput) || quantityInput == "cancel")
     {
-        if (std::cin.eof())
+        if (quantityInput == "cancel")
         {
             std::cin.clear();
             std::cout << "\nReturning to main menu...\n";
@@ -238,8 +239,14 @@ bool handleRemove(Inventory& inventory)
     std::cout << "\n--- Remove Component ---\n";
 
     std::cout << "Part Number: ";
-    if (!std::getline(std::cin, partNumber))
+    if (!std::getline(std::cin, partNumber) || partNumber == "cancel")
     {
+        if (partNumber == "cancel")
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
     }
         
@@ -331,8 +338,14 @@ bool handleStock(Inventory& inventory)
     std::cout << "\n--- Update Component Quantity---\n";
 
     std::cout << "Part Number: ";
-    if (!std::getline(std::cin, partNumber))
+    if (!std::getline(std::cin, partNumber) || partNumber == "cancel")
     {
+        if (partNumber == "cancel")
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
     }
         
@@ -366,8 +379,16 @@ bool handleStock(Inventory& inventory)
     std::cout << "Quantity: ";
 
     std::string quantityInput;
-    if (!std::getline(std::cin, quantityInput))
+    if (!std::getline(std::cin, quantityInput) || quantityInput == "cancel")
+    {
+        if (quantityInput == "cancel")
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
+    }
 
     try
     {
@@ -427,8 +448,14 @@ bool  handleSearch(Inventory& inventory)
     std::string query;
     std::cout << "Enter the part number: ";
 
-    if (!std::getline(std::cin, query))
+    if (!std::getline(std::cin, query) || query == "cancel")
     {
+        if (query == "cancel")
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
         return false;
     }
 
