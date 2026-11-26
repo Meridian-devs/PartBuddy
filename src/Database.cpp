@@ -458,7 +458,7 @@ std::vector<Component> Database::searchComponent(const std::string& query)
  * @return True if the value was updated successfully, false otherwise.
  */
 
- bool Database::updateQuantity(const std::string& partNumber, int quantity) {
+bool Database::updateQuantity(const std::string& partNumber, int quantity) {
 
     if (connection == nullptr) 
     {
@@ -536,6 +536,56 @@ std::vector<Component> Database::searchComponent(const std::string& query)
     sqlite3_finalize(statement);
 
     return rowsAffected > 0;
+}
+
+bool Database::editComponent(const std::string& partNumber, const std::string editField, const std::string& editValue)
+{
+    if (connection == nullptr)
+    {
+        std::cerr << "Database is not open.\n";
+        return false;
+    }
+
+    const char* sql = R"(
+        UPDATE components
+        SET 
+
+    )";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        connection,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to prepare update component: "
+                  << sqlite3_errmsg(connection) << '\n';
+        return false;
+    }
+
+    result = sqlite3_bind_int
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to update quantity: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Bind editValue
+    result = sqlite3_bind_text(
+        statement,
+        1,
+        editValue.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
 }
 
 sqlite3* Database::getConnection() const

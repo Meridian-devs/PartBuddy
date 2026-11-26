@@ -60,29 +60,7 @@ public:
     bool removeComponent(const std::string& partNumber);
 
 /**
-* @brief Updates the details of component. This function specifically handles the string edits.
-* 
-* @param partNumber Manufacturer's part number identifying the component to edit.
-* @param edit The change that is being made.
-* @return true if the change was updated successfully, false otherwise.
-*/
-
-bool editComponent(const std::string& partNumber, std::string& editField, std::string& editString);
-
-/**
-* @brief Updates the details of component. This function specifically handles the integer edits.
-* 
-* @param partNumber Manufacturer's part number identifying the component to edit.
-* @param edit The change that is being made.
-* @return true if the change was updated successfully, false otherwise.
-*/
-
-bool editComponent(const std::string& partNumber, std::string& editField, int editInteger);
-
-
-/**
  * @brief Lists the components added to the inventory database
- * 
  * @return list of compoenents, emppty if none added.
  */
 
@@ -90,12 +68,21 @@ bool editComponent(const std::string& partNumber, std::string& editField, int ed
 
 /**
  * @brief Seaches for a specific component in the database based on partnumber
- * 
  * @return list of components that match the search term
  */
 
     std::vector<Component> searchComponent(const std::string& query);
 
+/**
+ * @brief Updates the details of component. This function specifically handles the string edits.
+ * 
+ * @param partNumber Manufacturer's part number identifying the component to edit.
+ * @param editField The component field that is undergoing change.
+ * @param editValue The value to replace the existing field.
+ * @return true if the change was updated successfully, false otherwise.
+ */
+
+    bool editComponent(const std::string& partNumber, const std::string& editField, const std::string& editValue);
     
     sqlite3* getConnection() const;                         // Returns the underlying SQLite connection, pointer to active SQLite database connection
 
