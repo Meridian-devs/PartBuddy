@@ -6,6 +6,7 @@
 #include <Database.hpp>
 #include <Inventory.hpp>
 #include <Component.hpp>
+#include <TerminalUI.hpp>
 
 /**
  * @brief Displays the PartBuddy welcome graphic and message.
@@ -15,7 +16,7 @@
 
 void printWelcome()
 {
-    std::cout << "\033[1;32m" << R"(
+    std::cout << TUI::BOLD << R"(
                  .*%%%-..                           
             .:*#%%%%%%%%%%-..                      
            .#@%%%%%%%%%%%%%%%#-..           888888ba                      dP    888888ba                 dP       dP
@@ -72,7 +73,7 @@ bool handleAdd(Inventory& inventory)
     Component component;
     std::vector<Component> components = inventory.getComponents();
 
-    std::cout << "\n--- Add Component ---\n";
+    std::cout << TUI::WHITE << "\n--- Add Component ---\n";
 
     std::cout << "Part number: ";
     if (!std::getline(std::cin, component.partNumber) || component.partNumber == "cancel")
@@ -88,7 +89,7 @@ bool handleAdd(Inventory& inventory)
 
     if (component.partNumber.empty())
     {
-        std::cout << "Part number cannot be empty.\n";
+        std::cout << TUI::RED << "Part number cannot be empty." << TUI::RESET << "\n";
         return false;
     }
 
@@ -97,7 +98,7 @@ bool handleAdd(Inventory& inventory)
     {
         if (existingComponent.partNumber == component.partNumber) 
         {
-            std::cout << "Part number already exists.\n";
+            std::cout << TUI::RED << "Part number already exists." << TUI::RESET << "\n";
             return false;
         }
     }
@@ -186,7 +187,7 @@ bool handleAdd(Inventory& inventory)
 
         if (charactersRead != quantityInput.size() || quantity < 0)
         {
-            std::cout << "Quantity must be a non-negative integer.\n";
+            std::cout << TUI::RED << "Quantity must be a non-negative integer." << TUI::RESET << "\n";
             return false;
         }
         component.quantity = quantity;
@@ -194,7 +195,7 @@ bool handleAdd(Inventory& inventory)
     catch (const std::exception&)
     {
         // std::stoi throws if the input cannot be converted to an integer or is outside the supported range.
-        std::cout << "Invalid quantity. Enter a whole number.\n";
+        std::cout << TUI::RED << "Invalid quantity. Enter a whole number." << TUI::RESET << "\n";
         return false;
     }
 
@@ -213,11 +214,11 @@ bool handleAdd(Inventory& inventory)
     // Pass the completed Component object to the Inventory layer.
     if (inventory.addComponent(component))
     {
-        std::cout << "Component added successfully!\n";
+        std::cout << TUI::GREEN << "Component added successfully!" << TUI::RESET << "\n";
         return true;
     }
 
-    std::cout << "Failed to add component.\n";
+    std::cout << TUI::RED << "Failed to add component." << TUI::RESET << "\n";
     return false;
 }
 
@@ -443,7 +444,7 @@ bool handleStock(Inventory& inventory)
  * @param inventory Inventory instance used to retrieve component information.
  */
 
-bool  handleSearch(Inventory& inventory)
+bool handleSearch(Inventory& inventory)
 {
     std::string query;
     std::cout << "Enter the part number: ";
@@ -584,7 +585,7 @@ int main()
     // Main command-processing loop
     while (true)
     {
-        std::cout << "PartBuddy > ";
+        std::cout << TUI::BOLD << "PartBuddy > ";
         if (!std::getline(std::cin, command)) {
             if (std::cin.eof()) {                           // Handle EOF command (CTRL+Z on Win/CTRL+D on Linux-like systems)
                 break;
