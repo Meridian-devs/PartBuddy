@@ -1,5 +1,6 @@
 #include "Inventory.hpp"
 #include "Database.hpp"
+#include <cctype>
 
 /**
  * @brief Constructs an Inventory object
@@ -65,6 +66,49 @@ std::vector<Component> Inventory::getComponents() const
 bool Inventory::updateQuantity(const std::string& partNumber, int quantity)
 {
     return database.updateQuantity(partNumber, quantity);
+}
+
+/**
+* @brief Updates the details of component. This function specifically handles the string edits.
+*
+* Delegates the editing operation to the Database layer
+* 
+* @param partNumber Manufacturer's part number identifying the component to edit.
+* @param edit The change that is being made.
+* @return true if the change was updated successfully, false otherwise.
+*/
+bool Inventory::editComponent(const std::string& partNumber, std::string& editField, std::string& editString)
+{
+   return database.editComponent(partNumber, editField, editString); 
+}
+
+/**
+* @brief Updates the details of component. This function specifically handles the integer edits.
+*
+* Delegates the editing operation to the Database layer
+* 
+* @param partNumber Manufacturer's part number identifying the component to edit.
+* @param edit The change that is being made.
+* @return true if the change was updated successfully, false otherwise.
+*/
+bool Inventory::editComponent(const std::string& partNumber, std::string& editField, int editInteger)
+{
+    return database.editComponent(partNumber, editField, editInteger);
+}
+
+/**
+* @brief Converts strings to lowercase
+* 
+* @param s the string to convert to lowercase
+* @return a string in all lowercase
+*/
+std::string Inventory::toLower(std::string s)
+{
+    for (char& c : s)
+    {
+        c = std::tolower(c);
+    }
+    return s;
 }
 
 /**

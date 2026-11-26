@@ -58,6 +58,32 @@ public:
     bool updateQuantity(const std::string& partNumber, int quantity);
 
     /**
+     * @brief Updates the details of component. This function specifically handles the string edits.
+     * 
+     * @param partNumber Manufacturer's part number identifying the component to edit.
+     * @param edit The change that is being made.
+     * @return true if the change was updated successfully, false otherwise.
+     */
+    bool editComponent(const std::string& partNumber, std::string& editField, std::string& editString);
+
+     /**
+     * @brief Updates the details of component. This function specifically handles the integer edits.
+     * 
+     * @param partNumber Manufacturer's part number identifying the component to edit.
+     * @param edit The change that is being made.
+     * @return true if the change was updated successfully, false otherwise.
+     */
+    bool editComponent(const std::string& partNumber, std::string& editField, int editInteger);
+
+    /**
+     * @brief Converts strings to lowercase
+     * 
+     * @param s the string to convert to lowercase
+     * @return a string in all lowercase
+     */
+    static std::string toLower(std::string s);
+
+    /**
      * @brief Retrieves all components in the inventory
      * 
      * @return A vector containing the components in the inventory

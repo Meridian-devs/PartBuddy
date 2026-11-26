@@ -59,6 +59,26 @@ public:
 
     bool removeComponent(const std::string& partNumber);
 
+/**
+* @brief Updates the details of component. This function specifically handles the string edits.
+* 
+* @param partNumber Manufacturer's part number identifying the component to edit.
+* @param edit The change that is being made.
+* @return true if the change was updated successfully, false otherwise.
+*/
+
+bool editComponent(const std::string& partNumber, std::string& editField, std::string& editString);
+
+/**
+* @brief Updates the details of component. This function specifically handles the integer edits.
+* 
+* @param partNumber Manufacturer's part number identifying the component to edit.
+* @param edit The change that is being made.
+* @return true if the change was updated successfully, false otherwise.
+*/
+
+bool editComponent(const std::string& partNumber, std::string& editField, int editInteger);
+
 
 /**
  * @brief Lists the components added to the inventory database
