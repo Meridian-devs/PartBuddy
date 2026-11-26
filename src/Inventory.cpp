@@ -39,6 +39,7 @@ bool Inventory::addComponent(const Component& component)
  * @param partNumber Part number identifying the component.
  * @return true if the component was removed, false otherwise.
  */
+
 bool Inventory::removeComponent(const std::string& partNumber)
 {
     return database.removeComponent(partNumber);
@@ -56,59 +57,16 @@ std::vector<Component> Inventory::getComponents() const
 }
 
 /**
-* @brief Updates the quantity of a component
-* 
-* @param partNumber Manufacturer's part number identifying the component to remove.
-* @param quantity   New quantity for the component
-* @return true if the quantity was updated successfully, false otherwise
-*/
+ * @brief Updates the quantity of a component
+ * 
+ * @param partNumber Manufacturer's part number identifying the component to remove.
+ * @param quantity   New quantity for the component
+ * @return true if the quantity was updated successfully, false otherwise
+ */
 
 bool Inventory::updateQuantity(const std::string& partNumber, int quantity)
 {
     return database.updateQuantity(partNumber, quantity);
-}
-
-/**
-* @brief Updates the details of component. This function specifically handles the string edits.
-*
-* Delegates the editing operation to the Database layer
-* 
-* @param partNumber Manufacturer's part number identifying the component to edit.
-* @param edit The change that is being made.
-* @return true if the change was updated successfully, false otherwise.
-*/
-bool Inventory::editComponent(const std::string& partNumber, std::string& editField, std::string& editString)
-{
-   return database.editComponent(partNumber, editField, editString); 
-}
-
-/**
-* @brief Updates the details of component. This function specifically handles the integer edits.
-*
-* Delegates the editing operation to the Database layer
-* 
-* @param partNumber Manufacturer's part number identifying the component to edit.
-* @param edit The change that is being made.
-* @return true if the change was updated successfully, false otherwise.
-*/
-bool Inventory::editComponent(const std::string& partNumber, std::string& editField, int editInteger)
-{
-    return database.editComponent(partNumber, editField, editInteger);
-}
-
-/**
-* @brief Converts strings to lowercase
-* 
-* @param s the string to convert to lowercase
-* @return a string in all lowercase
-*/
-std::string Inventory::toLower(std::string s)
-{
-    for (char& c : s)
-    {
-        c = std::tolower(c);
-    }
-    return s;
 }
 
 /**
@@ -121,4 +79,36 @@ std::string Inventory::toLower(std::string s)
 std::vector<Component> Inventory::searchComponent(const std::string& query) const
 {
     return database.searchComponent(query);
+}
+
+/**
+ * @brief Updates the details of component. This function specifically handles the string edits.
+ *
+ * Delegates the editing operation to the Database layer
+ * 
+ * @param partNumber Manufacturer's part number identifying the component to edit.
+ * @param editField The field to change.
+ * @param editValue The new value to occupy the field for the specified component.
+ * @return true if the change was updated successfully, false otherwise.
+ */
+
+bool Inventory::editComponent(const std::string& partNumber, const std::string& editField, const std::string& editValue)
+{
+    return database.editComponent(partNumber, editField, editValue);
+}
+
+/**
+ * @brief Converts strings to lowercase
+ * 
+ * @param s the string to convert to lowercase
+ * @return a string in all lowercase
+ */
+
+std::string Inventory::toLower(std::string s)
+{
+    for (char& c : s)
+    {
+        c = std::tolower(c);
+    }
+    return s;
 }

@@ -78,7 +78,7 @@ public:
  * 
  * @param partNumber Manufacturer's part number identifying the component to edit.
  * @param editField The component field that is undergoing change.
- * @param editValue The value to replace the existing field.
+ * @param editValue The value to populate the specified field.
  * @return true if the change was updated successfully, false otherwise.
  */
 

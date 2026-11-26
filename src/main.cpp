@@ -43,14 +43,12 @@ void printHelp()    // Displays the available commands
         list    List all components
         search  Search for components
         stock   Adjust component quantity
+        edit    Edit component fields (except quant.)
 
         help    Display this menu
         cancel  Returns to home menu
         clear   Clear command line (scroll up for prev. cmd's)
         exit    Close PartBuddy
-
-        ** Not yet implemented... **
-        edit    Edit a component
 )";
 }
 
@@ -443,7 +441,7 @@ bool handleStock(Inventory& inventory)
  * @param inventory Inventory instance used to retrieve component information.
  */
 
-bool  handleSearch(Inventory& inventory)
+bool handleSearch(Inventory& inventory)
 {
     std::string query;
     std::cout << "Enter the part number: ";
@@ -503,15 +501,12 @@ bool handleEdit(Inventory& inventory)
 {
     std::string partNumber;
     std::string editField;
-    std::string editString;
-    std::string editInteger;
+    std::string editValue;
     std::string confirmation;
 
-    handleSearch(inventory);
+    std::cout << "Part number to edit (or 'cancel'): ";
 
-    std::cout << "\nEnter the part number of the component you would like to edit: ";
-
-    if (!std::getline(std::cin, partNumber) || partNumber == "cancel")
+    if (!std::getline(std::cin, partNumber) || partNumber == "cancel" || partNumber.empty())
     {
         if (partNumber == "cancel")
         {
@@ -519,18 +514,17 @@ bool handleEdit(Inventory& inventory)
             std::cout << "\nReturning to main menu...\n";
             return false;
         }
+        else if (partNumber.empty())
+        {
+            std::cout << "Search query cannot be empty.\n";
+            return false;
+        }
         return false;
     }
 
-    if (partNumber.empty())
-    {
-        std::cout << "Search query cannot be empty.\n";
-        return false;
-    }
+    std::cout << "Field to edit: ";
 
-    std::cout << "Enter the field you would like to edit: ";
-
-    if (!std::getline(std::cin, editField) || editField == "cancel")
+    if (!std::getline(std::cin, editField) || editField == "cancel" || editField.empty())
     {
         if (editField == "cancel")
         {
@@ -538,124 +532,51 @@ bool handleEdit(Inventory& inventory)
             std::cout << "\nReturning to main menu...\n";
             return false;
         }
+        else if (editField.empty())
+        {
+            std::cout << "Edit field cannot be empty.\n";
+            return false;
+        }
         return false;
     }
 
-    if (editField.empty())
+    std::cout << "New value (or 'cancel'): ";
+
+    if (!std::getline(std::cin, editValue) || editValue == "cancel" || editValue.empty())
     {
-        std::cout << "Edit field cannot be empty.\n";
+        if (editValue == "cancel")
+        {
+            std::cin.clear();
+            std::cout << "\nReturning to main menu...\n";
+            return false;
+        }
+        else if (editValue.empty())
+        {
+            std::cout << "Edit field cannot be empty.\n";
+            return false;
+        }
         return false;
     }
 
-    // Convert user input to lowercase and initiates the edit sequence
-    editField = Inventory::toLower(editField);
-    if (editField == "part number" || editField == "manufacturer" || editField == "category" || editField == "quantity" || editField == "location")
+    std::cout << "Confirm changes for " << partNumber << "? [Y/N]: ";
+    if (!std::getline(std::cin, confirmation))
     {
-        std::cout << "\nEnter your changes: ";
-
-        if (!std::getline(std::cin, editString) || editString == "cancel")
-        {
-            if (editString == "cancel")
-            {
-                std::cin.clear();
-                std::cout << "\nReturning to main menu...\n";
-                return false;
-            }
-            return false;
-        }
-
-        if (editString.empty())
-        {
-            std::cout << "Changes cannot be empty.\n";
-            return false;
-        }
-
-        // Added handling to ensure changes are entered correctly
-        std::cout << "Confirm changes for " << partNumber << "? [Y/N]: ";
-        if (!std::getline(std::cin, confirmation))
-        {
-            return false;
-        }
-
-        if (confirmation != "Y" && confirmation != "y")
-        {
-            std::cout << "Component changes cancelled.\n";
-            return false;
-        }
-
-        if (inventory.editComponent(partNumber, editField, editString))
-        {
-            std::cout << "Component changes updated successfully!\n";
-            return true;
-        }
-
-        std::cout << "Component not found or failed to update quantity.\n";
         return false;
     }
 
-    if (editField == "quantity")
+    if (confirmation != "Y" && confirmation != "y")
     {
-        int quantity;
-        std::cout << "\nEnter your changes: ";
+        std::cout << "Component changes cancelled.\n";
+        return false;
+    }
 
-        if (!std::getline(std::cin, editInteger) || editInteger == "cancel")
-        {
-            if (editInteger == "cancel")
-            {
-                std::cin.clear();
-                std::cout << "\nReturning to main menu...\n";
-                return false;
-            }
-            return false;
-        }
-
-        if (editInteger.empty())
-        {
-            std::cout << "Integer field cannot be empty.\n";
-            return false;
-        }
-
-        try
-        {   
-            // Track how many characters were used by std::stoi
-            // Allows us to reject input such as "12abc".
-            std::size_t charactersRead = 0;
-
-            quantity = std::stoi(editInteger, &charactersRead);
-
-            if (charactersRead != editInteger.size() || quantity < 0)
-            {
-                std::cout << "Quantity must be a non-negative integer.\n";
-                return false;
-            }
-        }
-        catch (const std::exception&)
-        {
-            // std::stoi throws if the input cannot be converted to an integer or is outside the supported range.
-            std::cout << "Invalid quantity. Enter a whole number.\n";
-            return false;
-        }
-
-        // Added handling to ensure changes are entered correctly
-        std::cout << "Confirm changes for " << partNumber << "? [Y/N]: ";
-        if (!std::getline(std::cin, confirmation))
-        {
-            return false;
-        }
-
-        if (confirmation != "Y" && confirmation != "y")
-        {
-            std::cout << "Quantity update cancelled.\n";
-            return false;
-        }
-
-        if (inventory.editComponent(partNumber, editField, editInteger))
-        {
-            std::cout << "Component changes updated successfully!\n";
-            return true;
-        }
-
-        std::cout << "Component not found or failed to update quantity.\n";
+    if (inventory.editComponent(partNumber, editField, editValue))
+    {
+        std::cout << "Component updated successfully.\n";
+    }
+    else
+    {
+        std::cout << "Failed to update component.\n";
         return false;
     }
     return true;
@@ -686,7 +607,7 @@ void handleCommand(const std::string& command, Inventory& inventory)
         handleSearch(inventory);
     }
     else if (command == "edit") {
-        handleEdit(inventory);            // Implement edit component details
+        handleEdit(inventory);
     }
     else if (command == "stock") {
         handleStock(inventory);
@@ -746,7 +667,7 @@ int main()
     // Main command-processing loop
     while (true)
     {
-        std::cout << "PartBuddy > ";
+        std::cout << "PartBuddy >> ";
         if (!std::getline(std::cin, command)) {
             if (std::cin.eof()) {                           // Handle EOF command (CTRL+Z on Win/CTRL+D on Linux-like systems)
                 break;

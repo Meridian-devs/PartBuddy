@@ -484,8 +484,7 @@ bool Database::updateQuantity(const std::string& partNumber, int quantity) {
 
     if (result != SQLITE_OK)
     {
-        std::cerr << "Failed to prepare update quantity: "
-                  << sqlite3_errmsg(connection) << '\n';
+        std::cerr << "Failed to prepare update quantity: " << sqlite3_errmsg(connection) << '\n';
         return false;
     }
 
@@ -538,7 +537,7 @@ bool Database::updateQuantity(const std::string& partNumber, int quantity) {
     return rowsAffected > 0;
 }
 
-bool Database::editComponent(const std::string& partNumber, const std::string editField, const std::string& editValue)
+bool Database::editComponent(const std::string& partNumber, const std::string& editField, const std::string& editValue)
 {
     if (connection == nullptr)
     {
@@ -546,17 +545,16 @@ bool Database::editComponent(const std::string& partNumber, const std::string ed
         return false;
     }
 
-    const char* sql = R"(
+    const std::string sql = R"(
         UPDATE components
-        SET 
-
-    )";
+        SET )" + editField + R"( = ?
+        WHERE part_number = ?)"; 
 
     sqlite3_stmt* statement = nullptr;
 
     int result = sqlite3_prepare_v2(
         connection,
-        sql,
+        sql.c_str(),
         -1,
         &statement,
         nullptr
@@ -564,17 +562,7 @@ bool Database::editComponent(const std::string& partNumber, const std::string ed
 
     if (result != SQLITE_OK)
     {
-        std::cerr << "Failed to prepare update component: "
-                  << sqlite3_errmsg(connection) << '\n';
-        return false;
-    }
-
-    result = sqlite3_bind_int
-
-    if (result != SQLITE_OK)
-    {
-        std::cerr << "Failed to update quantity: " << sqlite3_errmsg(connection) << "\n";
-        sqlite3_finalize(statement);
+        std::cerr << "Failed to prepare update component: " << sqlite3_errmsg(connection) << '\n';
         return false;
     }
 
@@ -586,6 +574,45 @@ bool Database::editComponent(const std::string& partNumber, const std::string ed
         -1,
         SQLITE_TRANSIENT
     );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to update component: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Bind editValue
+    result = sqlite3_bind_text(
+        statement,
+        2,
+        partNumber.c_str(),
+        -1,
+        SQLITE_TRANSIENT
+    );
+
+    if (result != SQLITE_OK)
+    {
+        std::cerr << "Failed to update component: " << sqlite3_errmsg(connection) << "\n";
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Execute statement
+    result = sqlite3_step(statement);
+
+    if (result != SQLITE_DONE)
+    {
+        std::cerr << "Failed to update component: " << sqlite3_errmsg(connection) << '\n';
+        sqlite3_finalize(statement);
+        return false;
+    }
+
+    // Check the amount of rows affected and release the statement
+    const int rowsAffected = sqlite3_changes(connection);
+    sqlite3_finalize(statement);
+
+    return rowsAffected > 0;
 }
 
 sqlite3* Database::getConnection() const
